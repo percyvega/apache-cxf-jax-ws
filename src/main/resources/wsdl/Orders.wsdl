@@ -1,0 +1,48 @@
+<wsdl:definitions xmlns:order="http://cxf.percyvega.com/schema/Order"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:tns="http://cxf.percyvega.com/service/Orders"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  name="HelloWorldImplService"
+                  targetNamespace="http://cxf.percyvega.com/service/Orders">
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://cxf.percyvega.com/service/Orders">
+            <xsd:import namespace="http://cxf.percyvega.com/schema/Order" schemaLocation="../xsd/Order.xsd"></xsd:import>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="ProcessOrderPlacementRequest">
+        <wsdl:part element="order:orderInquiry" name="orderInquiry"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="ProcessOrderPlacementResponse">
+        <wsdl:part element="order:orderInquiryResponse" name="orderInquiryResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:portType name="Orders">
+        <wsdl:operation name="ProcessOrderPlacement">
+            <wsdl:input message="tns:ProcessOrderPlacementRequest"></wsdl:input>
+            <wsdl:output message="tns:ProcessOrderPlacementResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="OrdersSOAP" type="tns:Orders">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ProcessOrderPlacement">
+            <soap:operation soapAction="http://cxf.percyvega.com/service/Orders/ProcessOrderPlacement"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="Orders">
+        <wsdl:port binding="tns:OrdersSOAP" name="OrdersSOAP">
+            <soap:address location="http://localhost:8080/services/orders"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
